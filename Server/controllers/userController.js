@@ -28,15 +28,6 @@ const registerUser = async (req, res) => {
     } 
 };
 
-const getAllUsers = async (req, res) => {
-    try {
-        const users = await User.find().select("-password");
-        res.status(200).json(users);
-    } catch(error) {
-        res.status(500).json({msg: error.message});
-    }
-};
-
 const loginUser = async (req, res) => {
     try {
         const{error} = loginSchema.validate(req.body, {abortEarly: fales});
@@ -68,8 +59,20 @@ const loginUser = async (req, res) => {
     }
 };
 
+const getProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select("-password");
+        if(!user) {
+            return res.status(404).json({msg: "User not found"});
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({msg: error.message});
+    }
+};
+
 module.exports = {
     registerUser,
-    getAllUsers,
-    loginUser
+    loginUser,
+    getProfile
 };

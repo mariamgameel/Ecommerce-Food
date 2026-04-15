@@ -8,6 +8,6 @@ const isAdmin = require("../middleware/roleMiddleware");
 
 router.post("/register", validate(registerSchema), userController.registerUser);
 router.post("/login", validate(loginSchema), userController.loginUser);
-router.get("/", auth, isAdmin, userController.getAllUsers);
+router.get("/profile", auth, userController.getProfile);
 
 module.exports = router;
